@@ -41,6 +41,7 @@ class Attention(nn.Module):
     """
 
     def __init__(self, attention_heads, embedding_dim):
+        # Todo: does not proper multi-head attention!
         super().__init__()
 
         self.attention_heads = attention_heads
