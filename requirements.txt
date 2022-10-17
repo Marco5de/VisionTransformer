@@ -1,5 +1,5 @@
 torch
 torchvision
 numpy
-matplotli
+matplotlib
 jupyter
