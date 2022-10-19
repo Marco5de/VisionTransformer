@@ -3,3 +3,5 @@ torchvision
 numpy
 matplotlib
 jupyter
+opencv-python
+tqdm
