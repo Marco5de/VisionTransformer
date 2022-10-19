@@ -2,7 +2,7 @@ import os
 import torch
 import torch.utils.data
 
-__class_map = {
+_class_map = {
     "BarredArea": 0,
     "Downhill": 1,
     "ExpressEnd": 2,
@@ -49,6 +49,10 @@ class FloorDataset(torch.utils.data.Dataset):
     def __init__(self, root_dir: str, train: bool):
         self.root_dir = root_dir
         self.train = train
+        self.class_path_dic = {}
+        for key in _class_map.keys():
+            self.class_path_dic[key] = []
+
         if not train:
             raise NotImplementedError("Test data is missing!")
 
@@ -57,6 +61,22 @@ class FloorDataset(torch.utils.data.Dataset):
             if not os.path.isdir(os.path.join(root_dir, self._train_prefix, direc)):
                 print("Not a dir continue", direc)
                 continue
+
+            class_dirs = os.listdir(os.path.join(root_dir, self._train_prefix, direc))
+            print(class_dirs)
+
+            for class_dir in class_dirs:
+                if not os.path.isdir(os.path.join(root_dir, self._train_prefix, direc, class_dir)):
+                    # Todo - check if this only breaks inner or alsi the outer loop!
+                    continue
+                files = os.listdir(os.path.join(root_dir, self._train_prefix, direc, class_dir))
+                # Todo - build data structure [Class-name] -> [list of paths for images from that class}
+                # Todo - extract class name from path
+                for file in files:
+                    if file == ".keep":
+                        # todo - check if works
+                        continue
+                    self.class_path_dic[class_dir].append(os.path.join(root_dir, self._train_prefix, direc, class_dir, file))
 
         print(data_dirs)
 
