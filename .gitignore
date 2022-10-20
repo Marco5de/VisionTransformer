@@ -3,3 +3,4 @@ notebooks/.ipynb_checkpoints
 .idea
 data
 model
+**/__pycache__

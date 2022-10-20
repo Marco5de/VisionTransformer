@@ -1,4 +1,5 @@
 import os
+import random
 import torch
 import torch.utils.data
 import cv2
@@ -48,9 +49,19 @@ class FloorDataset(torch.utils.data.Dataset):
     _train_prefix = "Bodenerkennung/Trainingsdaten/grey"
     _ignore_list = [".keep"]
 
-    def __init__(self, root_dir: str, train: bool):
+    def __init__(self, root_dir: str, train: bool, transform=None, uniform: bool=False):
+        """
+        Args:
+            root_dir:       root directory of dataset - path to "Bodenerkennung" directory
+            train:          training mode if True else test mode - todo: test data not split
+            transform:      callable applied to loaded cv image
+            uniform:        uniform sampling of classes
+        """
         self.root_dir = root_dir
         self.train = train
+        self.transform = transform
+        self.uniform = uniform
+
         self.class_path_dic = {}
         for key in _class_map.keys():
             self.class_path_dic[key] = []
@@ -75,10 +86,15 @@ class FloorDataset(torch.utils.data.Dataset):
                     self.class_path_dic[class_dir].append(
                         os.path.join(root_dir, self._train_prefix, direc, class_dir, file))
 
-        # todo - for now no uniform sampling, simply use list to access values
-        self.path_list = []
-        for v in self.class_path_dic.values():
-            self.path_list.extend(v)
+        if  uniform:
+            raise NotImplementedError("Not yet implemented, required classes unclear")
+        else:
+            self.path_list = []
+            for v in self.class_path_dic.values():
+                self.path_list.extend(v)
+
+        for k, v in self.class_path_dic.items():
+            print(f"Found {len(v)} {k} images")
 
     def __len__(self):
         length = 0
@@ -87,27 +103,35 @@ class FloorDataset(torch.utils.data.Dataset):
         return length
 
     def __getitem__(self, item: int):
-        """
-        ToDo - Gedanken machen über uniformes sampling etc.
-        """
-        img_path = self.path_list[item]
-        # extract class from path
-        label = _class_map[img_path.split("/")[-2]]
-        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+        if self.uniform:
+            selected_class = random.randrange(start=0, stop=_class_map["XingSigns"])
+            raise NotImplementedError()
+        else:
+            img_path = self.path_list[item]
+            # extract class from path
+            label = _class_map[img_path.split("/")[-2]]
+
+        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE) / 255.0
+        if self.transform is not None:
+            img = self.transform(img)
         return img, label
 
 def __main__():
     import matplotlib.pyplot as plt
     from tqdm import tqdm
-    dset = FloorDataset("data/", train=True)
+    import torchvision.transforms as transforms
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.1221), (0.2415))
+    ])
+    dset = FloorDataset("data/", train=True, transform=transform, uniform=False)
     print("Length of dataset: ", len(dset))
-
     loader = torch.utils.data.DataLoader(dset, batch_size=4, shuffle=True)
     img, label = next(iter(loader))
 
     fig, axarr = plt.subplots(1, 4)
     for idx, ax in enumerate(axarr):
-        ax.imshow(img[idx], cmap="gray")
+        ax.imshow(img[idx].squeeze(), cmap="gray")
         ax.set_axis_off()
     fig.show()
 
@@ -116,10 +140,12 @@ def __main__():
         # compute mean of dataset
         loader = torch.utils.data.DataLoader(dset, batch_size=1, shuffle=False)
         mean = torch.zeros([1], dtype=torch.float32)
+        std = torch.zeros([1], dtype=torch.float32)
         for img, label in tqdm(loader):
-            mean += torch.tensor(img.float()).mean()
+            mean += img.mean()
+            std += img.std()
 
-        print(f"Mean of dataset - {mean / len(loader)}")
+        print(f"Mean of dataset - {mean / len(loader)} Std of dataset - {std / len(loader)}")
 
 if __name__ == "__main__":
     __main__()
