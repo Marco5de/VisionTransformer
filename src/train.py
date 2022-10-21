@@ -4,7 +4,7 @@ import torch.optim
 import torch.utils.data
 import torchvision.transforms as transforms
 from tqdm import tqdm
-from src.lib.FloorData import FloorDataset
+from src.lib.SignDataset import SignDataset
 from src.lib.ViT import ClsTransformer
 from src.lib.SmallCNN import SmallCNN
 from src.lib.utils import count_parameters
@@ -49,7 +49,7 @@ def __main__():
         transforms.ToTensor(),
         transforms.Normalize((0.1221), (0.2415))
     ])
-    dset = FloorDataset("data/", train=True, transform=transform)
+    dset = SignDataset("data/", train=True, transform=transform)
     train_loader = torch.utils.data.DataLoader(dset, batch_size=64, shuffle=True)
 
     # note, number of parameters of transformer is very sensitive to embedding dimension! (size of all linear layers)
