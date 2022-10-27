@@ -5,11 +5,11 @@ import torch.nn.functional as F
 
 class SmallCNN(nn.Module):
 
-    def __init__(self, num_classes: int, dropout_rate: float):
+    def __init__(self, num_classes: int, dropout_rate: float, input_channels: int=1):
         super().__init__()
 
         self.feature_extractor = nn.Sequential(
-            nn.Conv2d(1, 32, kernel_size=3, padding=1),
+            nn.Conv2d(input_channels, 32, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(2, stride=2, padding=1),
 

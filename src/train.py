@@ -50,12 +50,13 @@ def __main__():
         transforms.Normalize((0.1221), (0.2415))
     ])
     dset = SignDataset("data/", train=True, transform=transform)
+
     train_loader = torch.utils.data.DataLoader(dset, batch_size=64, shuffle=True)
 
     # note, number of parameters of transformer is very sensitive to embedding dimension! (size of all linear layers)
-    model = ClsTransformer(num_classes=37, embed_dim=64, input_dim=[16, 1, 160, 40], num_heads=4, num_layers=6)
+    #model = ClsTransformer(num_classes=37, embed_dim=64, input_dim=[16, 1, 160, 40], num_heads=4, num_layers=6)
     # todo - debug why smallCNN model does not work well
-    # model = SmallCNN(num_classes=37, dropout_rate=0.1)
+    model = SmallCNN(num_classes=37, dropout_rate=0.1)
     model.double()
     print(f"#parameter = {count_parameters(model)}")
 

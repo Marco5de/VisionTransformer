@@ -4,3 +4,4 @@ notebooks/.ipynb_checkpoints
 data
 model
 **/__pycache__
+log_dir
