@@ -5,12 +5,12 @@ from torch.utils.tensorboard import SummaryWriter
 
 
 def train_signs_epoch(model: nn.Module,
-                data_loader: torch.utils.data.DataLoader,
-                optim,
-                epoch: int,
-                device,
-                criterion,
-                writer: SummaryWriter):
+                      data_loader: torch.utils.data.DataLoader,
+                      optim,
+                      epoch: int,
+                      device,
+                      criterion,
+                      writer: SummaryWriter):
     # set model to training mode (e.g. activate dropout)
     model.train()
     train_acc = 0

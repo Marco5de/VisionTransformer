@@ -11,6 +11,7 @@ from src.lib.train import train_signs_epoch
 from src.lib.SignDataset import SignDataset
 from src.lib.SmallCNN import SmallCNN
 
+
 def train_signs():
     transform = transforms.Compose([
         transforms.ToTensor(),

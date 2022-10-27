@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 class SmallCNN(nn.Module):
 
-    def __init__(self, num_classes: int, dropout_rate: float, input_channels: int=1):
+    def __init__(self, num_classes: int, dropout_rate: float, input_channels: int = 1):
         super().__init__()
 
         self.feature_extractor = nn.Sequential(
