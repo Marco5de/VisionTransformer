@@ -15,7 +15,7 @@ import copy
 
 from src.lib.SignDataset import SignDataset
 from src.lib.train import train_signs_epoch
-from src.lib.model.qat_model import QATModel
+from src.lib.model_impl.qat_model import QATModel
 from src.lib.utils import inference_time
 
 
