@@ -39,3 +39,8 @@ def inference_time(model: torch.nn.Module,
 
     return (t1 - t0) / num_runs
 
+
+def export_onnx(model, device, input_size, path):
+    t = torch.randn(input_size).to(device)
+    # todo provide input/output names
+    torch.onnx.export(model, t, path)

@@ -17,6 +17,7 @@ from src.lib.dataset.SignDataset import SignDataset
 from src.lib.model_impl.qat_model import QATModel
 from src.lib.train import train_signs_epoch
 from src.lib.model_impl.classification import ClassificationNet
+from src.lib.utils.utils import export_onnx
 
 def __main__():
     transform = transforms.Compose([
