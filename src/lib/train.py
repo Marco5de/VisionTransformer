@@ -15,7 +15,7 @@ def train_signs_epoch(model: nn.Module,
     model.train()
     train_acc = 0
     for batch_idx, (input, label) in tqdm(enumerate(data_loader), total=len(data_loader)):
-        input, label = input.to(device), label.to(device)
+        input, label = input.to(device).float(), label.to(device)
         optim.zero_grad()
 
         pred = model(input)

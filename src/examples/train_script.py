@@ -26,7 +26,7 @@ def train_signs():
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
     print(f"Use {device} for training")
     model.to(device)
-    model.double()
+    model.float()
 
     criterion = nn.CrossEntropyLoss()
 
