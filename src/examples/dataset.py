@@ -3,7 +3,7 @@ import torch
 import torchvision.transforms as transforms
 
 from tqdm import tqdm
-from src.lib.SignDataset import SignDataset
+from src.lib.dataset.SignDataset import SignDataset
 
 
 def test_floor():

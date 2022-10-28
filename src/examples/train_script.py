@@ -8,8 +8,8 @@ from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
 
 from src.lib.train import train_signs_epoch
-from src.lib.SignDataset import SignDataset
-from src.lib.SmallCNN import SmallCNN
+from src.lib.dataset.SignDataset import SignDataset
+from src.lib.model_impl.SmallCNN import SmallCNN
 
 
 def train_signs():

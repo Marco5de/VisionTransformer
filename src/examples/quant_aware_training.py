@@ -13,10 +13,9 @@ import os
 import datetime
 import copy
 
-from src.lib.SignDataset import SignDataset
-from src.lib.train import train_signs_epoch
+from src.lib.dataset.SignDataset import SignDataset
 from src.lib.model_impl.qat_model import QATModel
-from src.lib.utils import inference_time
+from src.lib.utils.utils import inference_time
 
 
 def __main__():

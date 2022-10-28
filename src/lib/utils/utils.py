@@ -13,7 +13,6 @@ def inference_time(model: torch.nn.Module,
                    num_warmup: int):
     """
     Implements benchmarking of the inference time of a given model on a given device for an input size.
-    todo - not fully sure if this works correctly, inference time seems to be quite high for test model!
     Args:
         model: model that is evaluated
         device: device for execution

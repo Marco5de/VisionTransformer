@@ -39,7 +39,7 @@ class SmallCNN(nn.Module):
 
 
 if __name__ == "__main__":
-    from src.lib.utils import count_parameters
+    from src.lib.utils.utils import count_parameters
 
     t = torch.randn(size=(8, 1, 160, 40))
     cnn = SmallCNN(num_classes=37, dropout_rate=0.1)

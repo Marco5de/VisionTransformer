@@ -199,7 +199,7 @@ class ClsTransformer(nn.Module):
 
 
 def __main__():
-    from src.lib.utils import count_parameters
+    from src.lib.utils.utils import count_parameters
     t = torch.randn([8, 1, 160, 40])
     model = ClsTransformer(num_classes=37, embed_dim=64, input_dim=[16, 1, 160, 40], num_heads=4, num_layers=6)
     print(f"Number of parameters = {count_parameters(model)}")
