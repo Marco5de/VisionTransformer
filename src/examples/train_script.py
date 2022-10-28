@@ -20,7 +20,7 @@ def train_signs():
     dset = SignDataset("data/Bodenerkennung", train=True, transform=transform, uniform=False)
     train_loader = torch.utils.data.DataLoader(dset, batch_size=128, shuffle=True)
 
-    model = SmallCNN(num_classes=37, dropout_rate=.1, input_channels=1)
+    # model = SmallCNN(num_classes=37, dropout_rate=.1, input_channels=1)
 
     optim = torch.optim.Adam(model.parameters(), lr=0.001)
     device = "cuda:0" if torch.cuda.is_available() else "cpu"

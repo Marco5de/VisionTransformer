@@ -29,3 +29,4 @@ def train_signs_epoch(model: nn.Module,
         writer.add_scalar("train/loss", loss.item(), epoch * len(data_loader) + batch_idx)
 
     writer.add_scalar("train/epoch_acc", train_acc / len(data_loader.dataset), epoch)
+    print(f"Epoch accuracy = {train_acc / len(data_loader.dataset)}")
