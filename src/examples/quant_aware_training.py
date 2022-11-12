@@ -16,7 +16,6 @@ import copy
 from src.lib.dataset.SignDataset import SignDataset
 from src.lib.model_impl.qat_model import QATModel
 from src.lib.train import train_signs_epoch
-from src.lib.model_impl.classification import ClassificationNet
 from src.lib.utils.utils import export_onnx
 
 def __main__():
@@ -38,18 +37,15 @@ def __main__():
 
     criterion = nn.CrossEntropyLoss()
     now = datetime.datetime.now()
-    model_path = f"../model/model_{now.strftime('%d-%m-%y-%H-%M-%S')}.pth"
-    writer = SummaryWriter(log_dir=os.path.join("log_dir", model_path))
+    model_path = f"model/model_{now.strftime('%d-%m-%y-%H-%M-%S')}.onnx"
+    writer = SummaryWriter(log_dir=os.path.join("log_dir", f"model_{now.strftime('%d-%m-%y-%H-%M-%S')}"))
 
     for epoch in range(2):
         train_signs_epoch(model, train_loader, optim, epoch, device, criterion, writer)
-        # torch.save(model.state_dict(), model_path)
+        export_onnx(model, device, (1, 3, 80, 80) , model_path)
     model = model.cpu()
     fused_model = copy.deepcopy(model)
 
-    # todo fusion stuff did not work as shown in the blog - research why and how it is used!
-    # model.train()
-    # fused_model.train()
     # todo according to blog train should be used - triggers pytorch assertion!
     model.eval()
     fused_model.eval()

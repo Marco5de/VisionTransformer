@@ -6,3 +6,4 @@ jupyter
 opencv-python
 tqdm
 tensorboard
+tensorflow

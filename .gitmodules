@@ -1,0 +1,6 @@
+[submodule "src/extern/PyTorch-ONNX-TFLite"]
+	path = src/extern/PyTorch-ONNX-TFLite
+	url = https://github.com/sithu31296/PyTorch-ONNX-TFLite.git
+[submodule "src/extern/onnx-tensorflow"]
+	path = src/extern/onnx-tensorflow
+	url = https://github.com/onnx/onnx-tensorflow.git
