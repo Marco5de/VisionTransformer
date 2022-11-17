@@ -1,43 +1,45 @@
+"""
+Example script based on https://github.com/sithu31296/PyTorch-ONNX-TFLite
+Showing conversion from onnx -> tf -> tflite
+As utils provide torch -> onnx - conversion for all formats available and working
+"""
 import onnx
 import tensorflow as tf
 import numpy as np
 from onnx_tf.backend import prepare
 
-onnx_model = onnx.load_model("model/backup/model.onnx")
-tf_rep = prepare(onnx_model)
-tf_rep.export_graph("model/backup/model.tf")
+ONNX_MODEL_PATH = "model/backup/model.onnx"
+TF_MODEL_PATH ="model/backup/model.tf"
+TFLITE_MODEL_PATH = "model/backup/model.tflite"
 
-model = tf.saved_model.load("model/backup/model.tf")
+
+onnx_model = onnx.load_model(ONNX_MODEL_PATH)
+tf_rep = prepare(onnx_model)
+tf_rep.export_graph(TFLITE_MODEL_PATH)
+
+model = tf.saved_model.load(TF_MODEL_PATH)
 model.trainable = False
 input_tensor = tf.random.uniform([1, 3, 80, 80])
 # todo requires named input!
 #out = model(**{'input': input_tensor})
 #print(out.shape)
 
-# Convert the model
-converter = tf.lite.TFLiteConverter.from_saved_model("model/backup/model.tf")
+converter = tf.lite.TFLiteConverter.from_saved_model(TF_MODEL_PATH)
 tflite_model = converter.convert()
 
-# Save the model
-with open("model/backup/model.tflite", 'wb') as f:
+with open(TFLITE_MODEL_PATH, "wb") as f:
     f.write(tflite_model)
 
-# Load the TFLite model and allocate tensors
-interpreter = tf.lite.Interpreter(model_path="model/backup/model.tflite")
+interpreter = tf.lite.Interpreter(model_path=TFLITE_MODEL_PATH)
 interpreter.allocate_tensors()
 
-# Get input and output tensors
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
-# Test the model on random input data
-input_shape = input_details[0]['shape']
+input_shape = input_details[0]["shape"]
 input_data = np.array(np.random.random_sample(input_shape), dtype=np.float32)
-interpreter.set_tensor(input_details[0]['index'], input_data)
+
+interpreter.set_tensor(input_details[0]["index"], input_data)
 
 interpreter.invoke()
-
-# get_tensor() returns a copy of the tensor data
-# use tensor() in order to get a pointer to the tensor
-output_data = interpreter.get_tensor(output_details[0]['index'])
-print(output_data)
+output_data = interpreter.get_tensor(output_details[0]["index"])
